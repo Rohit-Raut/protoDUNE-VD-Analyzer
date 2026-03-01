@@ -29,7 +29,7 @@ namespace duneana{
         private:
                 //art::InputTag fTALabel;
                 art::InputTag fTALabel;
-                art::InputTag fHitLabel;
+                //art::InputTag fHitLabel;
                 TTree* fRaw;
                 TTree* fHit; 
                 TTree* fTA;
@@ -53,20 +53,20 @@ namespace duneana{
         uint32_t fTA_detid;
         uint16_t fTA_type;
 
-	UInt_t    fChannel;
-	UShort_t fTPC, fPlane;
-	Int_t    fWire;
-	Int_t fView;
-	Int_t    fStartTick, fEndTick;
-	Float_t  fPeakTime, fIntegral, fPeakAmplitude, fRMS;
+	//UInt_t    fChannel;
+	//UShort_t fTPC, fPlane;
+	//Int_t    fWire;
+	//Int_t fView;
+	//Int_t    fStartTick, fEndTick;
+	//Float_t  fPeakTime, fIntegral, fPeakAmplitude, fRMS;
 
     };
 }
 
 duneana::hitdQ::hitdQ(fhicl::ParameterSet const& p)
     :EDAnalyzer(p),
-    fTALabel(p.get<art::InputTag>("TALabel")),
-    fHitLabel(p.get<art::InputTag>("HitLabel"))
+    fTALabel(p.get<art::InputTag>("TALabel"))
+    //fHitLabel(p.get<art::InputTag>("HitLabel"))
     //fTPLabel(p.get<art::InputTag>("TPLabel"))
 {}
 
@@ -156,29 +156,29 @@ void duneana::hitdQ::analyze(art::Event const&e ){
     }
 
     //Hit Information
-    auto hitHandle = e.getValidHandle<std::vector<recob::Hit>>(fHitLabel);
-    for(auto const& hit: *hitHandle){
-	if(hit.Channel()>6144) continue;
-	fChannel = hit.Channel();
-	fStartTick = hit.StartTick();
-	fEndTick = hit.EndTick();
-	fPeakTime = hit.PeakTime();
-	fIntegral = hit.Integral();
-	fView = hit.View();
-	fPeakAmplitude = hit.PeakAmplitude();
-	fRMS = hit.RMS();
-	auto const& wid = hit.WireID();
-	fWire = wid.Wire;
-	fPlane = wid.Plane;
-	fTPC = wid.TPC;
-	fHit->Fill();
-	//if (i++ == 5) break;
-	//std::cout << "Channel: " << hit.Channel()
-        //      << ", StartTick: " << hit.StartTick()
-        //      << ", EndTick: " << hit.EndTick()
-        //      << "\n";
-	
-    }
+   // auto hitHandle = e.getValidHandle<std::vector<recob::Hit>>(fHitLabel);
+   // for(auto const& hit: *hitHandle){
+   //     if(hit.Channel()>6144) continue;
+   //     fChannel = hit.Channel();
+   //     fStartTick = hit.StartTick();
+   //     fEndTick = hit.EndTick();
+   //     fPeakTime = hit.PeakTime();
+   //     fIntegral = hit.Integral();
+   //     fView = hit.View();
+   //     fPeakAmplitude = hit.PeakAmplitude();
+   //     fRMS = hit.RMS();
+   //     auto const& wid = hit.WireID();
+   //     fWire = wid.Wire;
+   //     fPlane = wid.Plane;
+   //     fTPC = wid.TPC;
+   //     fHit->Fill();
+   //     //if (i++ == 5) break;
+   //     //std::cout << "Channel: " << hit.Channel()
+   //     //      << ", StartTick: " << hit.StartTick()
+   //     //      << ", EndTick: " << hit.EndTick()
+   //     //      << "\n";
+   //     
+   // }
 
 
 
@@ -198,17 +198,17 @@ void duneana::hitdQ::reset(){
     fTA_adc_peak = 0;
     fTA_detid = 0;
     fTA_type = 0;
-    fChannel = 0;
-    fStartTick = 0;
-    fEndTick = 0;
-    fPeakTime = 0;
-    fIntegral = 0;
-    fView = 0;
-    fRMS = 0;
-    fPeakAmplitude = 0;
-    fWire = 0;
-    fPlane = 0;
-    fTPC = 0;
+    //fChannel = 0;
+    //fStartTick = 0;
+    //fEndTick = 0;
+    //fPeakTime = 0;
+    //fIntegral = 0;
+    //fView = 0;
+    //fRMS = 0;
+    //fPeakAmplitude = 0;
+    //fWire = 0;
+    //fPlane = 0;
+    //fTPC = 0;
 
 
 }
