@@ -82,21 +82,21 @@ void duneana::hitdQ::beginJob(){
     fHit->Branch("run",  &fRun,  "run/I");
     fHit->Branch("subrun",      &fSubRun, "subrun/I");
     fHit->Branch("event",       &fEvent,   "event/I");
-    fHit->Branch("Channel", 	&fChannel);
-    fHit->Branch("fStartTick", 	&fStartTick);
-    fHit->Branch("fEndTick",	&fEndTick);
-    fHit->Branch("fPeakTime", 	&fPeakTime);
-    fHit->Branch("fIntegral", 	&fIntegral);
-    fHit->Branch("fView", 	&fView);
-    fHit->Branch("fPeakAmplitude", 	&fPeakAmplitude);
-    fHit->Branch("fRMS", 	&fRMS);
-    //fHit->Branch("fROISummedADC", 	&fROISummedADC);
-    //fHit->Branch("fHitSummedADC", 	&fHitSummedADC);
-    //fHit->Branch("fGoodnessofFit", 	&fGoodnessofFit);
-    //fHit->Branch("fNDF"		&fNDF);
-    fHit->Branch("fWireId",	&fWire);
-    fHit->Branch("Plane",	&fPlane);
-    fHit->Branch("TPC",		&fTPC);
+    //fHit->Branch("Channel", 	&fChannel);
+    //fHit->Branch("fStartTick", 	&fStartTick);
+    //fHit->Branch("fEndTick",	&fEndTick);
+    //fHit->Branch("fPeakTime", 	&fPeakTime);
+    //fHit->Branch("fIntegral", 	&fIntegral);
+    //fHit->Branch("fView", 	&fView);
+    //fHit->Branch("fPeakAmplitude", 	&fPeakAmplitude);
+    //fHit->Branch("fRMS", 	&fRMS);
+    ////fHit->Branch("fROISummedADC", 	&fROISummedADC);
+    ////fHit->Branch("fHitSummedADC", 	&fHitSummedADC);
+    ////fHit->Branch("fGoodnessofFit", 	&fGoodnessofFit);
+    ////fHit->Branch("fNDF"		&fNDF);
+    //fHit->Branch("fWireId",	&fWire);
+    //fHit->Branch("Plane",	&fPlane);
+    //fHit->Branch("TPC",		&fTPC);
     //fHit->Branch("isValid"	&isValid);
 
 
