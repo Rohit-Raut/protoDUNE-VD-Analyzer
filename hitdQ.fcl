@@ -1,0 +1,58 @@
+#include "services_protodunevd.fcl"
+#include "protodune_tools_dune.fcl"
+process_name: hitdQ
+
+services: {
+    TFileService: {
+        fileName: "/pnfs/dune/scratch/users/rraut/trash/Cosmic_MC_Sim_1e6thr.root"
+        closeFileFast: false
+    }
+    TimeTracker:        @local::dune_time_tracker
+    MemoryTracker:      @local::dune_memory_tracker
+    RandomNumberGenerator: {}
+    #FileCatalogMetadata: @local::art_file_catalog_mc
+    @table::protodunevd_simulation_services
+}
+
+# Fix for the JSON parsing error - update PDS channel mapping
+# I got this issue resolved using slack
+services.DAPHNEChannelMapService.FileName: "PDVD_PDS_Mapping_v07082025.json"
+services.WireReadout.PDMapTool.MappingFile: "PDVD_PDS_Mapping_v07082025.json"
+
+source: {
+    module_type: RootInput
+    #maxEvents: -1
+    #fileNames: @local::my_input_files
+    ##fileNames: [
+    ##        "/pnfs/dune/scratch/users/rraut/protodunedm/82416035/Cosmic_detsim_reco_3.root"
+
+    ##]
+    ##skipEvents: 1
+}
+
+physics: {
+    analyzers: {
+        hitdQ: {
+            module_type: "hitdQ"
+	    #TALabel: 	"tamakerTPC"
+	    #HitLabel:	"gaushit"
+	    #for data use different label for TALabel
+	    TALabel: 	"triggerrawdecoder:daqinTCs"
+	    #HitLabel: 	"gaushit"
+	    #HitLabel: 	"gaushit"
+	}
+    }
+    trigger_sim: 	[]
+    analysis_path: [hitdQ]
+    trigger_paths:	[trigger_sim]
+    end_paths:     [analysis_path]
+}
+outputs: {
+  out1: {
+    module_type: RootOutput
+    fileName: "/pnfs/dune/scratch/users/trash/MC_reco_02.root"
+    fastCloning: false
+    dataTier: "reco"
+    streamName: "hitdQ"
+  }
+}

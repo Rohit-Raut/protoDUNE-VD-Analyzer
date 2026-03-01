@@ -1,0 +1,55 @@
+#include "ProtoDUNEDataUtils.fcl"
+#include "services_protodunevd.fcl"
+#include "services_vdcoldbox.fcl"
+#include "tools_dune.fcl"
+##include "services_refactored_pdune.fcl"
+
+process_name: cosmicAnalysisProcess
+services:{
+    #@table::protodunehd_refactored_simulation_services
+    TFileService:       {
+        fileName:"/pnfs/dune/scratch/users/rraut/hist/Neutrino_onlyEff_v2.root"
+        #closeFileFast:false
+    }
+    TimeTracker:        @local::dune_time_tracker
+    MemoryTracker:      @local::dune_memory_tracker
+    message:            @local::standard_info
+    @table::protodunevd_simulation_services
+}
+services.DAPHNEChannelMapService.FileName: "PDVD_PDS_Mapping_v07082025.json"
+services.WireReadout.PDMapTool.MappingFile: "PDVD_PDS_Mapping_v07082025.json"
+source:
+{
+    module_type: RootInput
+    maxEvents: -1
+    fileNames: ["/exp/dune/app/users/rraut/test_newv/work/_testdetsim2.root"]
+}
+physics:
+{
+    analyzers:{
+        cosmicAnalysis:{
+            module_type:        "cosmicAnalysis"
+            MCParticleTag:      "largeant"
+	        TPLabel:		    "tpmakerTPC"
+	        TALabel:		    "tamakerTPC::DetsimCosmic"
+		SEDLabel:      ["largeant", "LArG4DetectorServicevolTPCActive", "G4NeutrinoStage1"]
+            #RawDigitLabel:      "tpcrawdecoder:daq"
+        }
+    }
+    trigger_sim:		        []
+    analysis_path:              [cosmicAnalysis]
+    trigger_paths:              [trigger_sim]
+    #stream1:			[out1]
+    end_paths:                  [analysis_path]
+
+}
+outputs: {}
+#outputs:
+#{
+#    out1:
+#    {
+#        module_type: RootOutput
+#        fileName: "/pnfs/dune/scratch/users/rraut/hist/test_10.root"
+#        fastCloning: false
+#    }
+#}

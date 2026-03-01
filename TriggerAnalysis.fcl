@@ -1,0 +1,64 @@
+#include "services_protodunevd.fcl"
+
+process_name: TriggerAnalysis
+
+services: {
+    TFileService: {
+        fileName: "/pnfs/dune/scratch/users/rraut/hist/test_pdvdData.root"
+	closeFileFast: false
+    }
+    TimeTracker:        @local::dune_time_tracker
+    MemoryTracker:      @local::dune_memory_tracker
+    RandomNumberGenerator: {}
+    FileCatalogMetadata: @local::art_file_catalog_mc
+    @table::protodunevd_simulation_services
+}
+
+# Fix for the JSON parsing error - update PDS channel mapping
+# I got this issue resolved using slack
+services.DAPHNEChannelMapService.FileName: "PDVD_PDS_Mapping_v07082025.json"
+services.WireReadout.PDMapTool.MappingFile: "PDVD_PDS_Mapping_v07082025.json"
+
+source: {
+    module_type: RootInput
+    maxEvents: -1
+    fileNames: []
+#    fileNames: [
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_0.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_1.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_2.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_3.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_4.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_5.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_6.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_7.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_8.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_9.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_10.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_11.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_12.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_13.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_14.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_15.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_16.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_17.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_18.root",
+#	  "/pnfs/dune/scratch/users/rraut/protodunedm/87705218/Cosmic_8e6thres_detsim_19.root"
+#	
+#
+#    ]  # Your trigger-processed file
+}
+
+physics: {
+    analyzers: {
+        triggerAnalysis: {
+            module_type: "TriggerAnalysis"
+            TPLabel:     "triggerrawdecoder:daq"
+            TALabel:     "triggerrawdecoder:daq"
+        }
+    }
+    
+    analysis_path: [triggerAnalysis]
+    end_paths:     [analysis_path]
+}
+outputs: {}
