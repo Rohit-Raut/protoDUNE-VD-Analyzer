@@ -34,10 +34,10 @@ physics: {
     analyzers: {
         hitdQ: {
             module_type: "hitdQ"
-	    #TALabel: 	"tamakerTPC"
+	    TALabel: 	"tamakerTPC"
 	    #HitLabel:	"gaushit"
 	    #for data use different label for TALabel
-	    TALabel: 	"triggerrawdecoder:daqinTCs"
+	    #TALabel: 	"triggerrawdecoder:daqinTCs"
 	    #HitLabel: 	"gaushit"
 	    #HitLabel: 	"gaushit"
 	}
