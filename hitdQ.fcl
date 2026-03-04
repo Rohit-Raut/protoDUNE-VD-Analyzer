@@ -4,7 +4,7 @@ process_name: hitdQ
 
 services: {
     TFileService: {
-        fileName: "/pnfs/dune/scratch/users/rraut/trash/Cosmic_MC_Sim_1e6thr.root"
+        fileName: "/pnfs/dune/scratch/users/rraut/trash/Cosmic_MC_allChannel.root"
         closeFileFast: false
     }
     TimeTracker:        @local::dune_time_tracker
@@ -38,7 +38,7 @@ physics: {
 	    #HitLabel:	"gaushit"
 	    #for data use different label for TALabel
 	    TALabel: 	"triggerrawdecoder:daqinTCs"
-	    #HitLabel: 	"gaushit"
+	    HitLabel: 	"gaushit"
 	    #HitLabel: 	"gaushit"
 	}
     }
