@@ -38,20 +38,20 @@ namespace duneana{
 
 
 
-        uint16_t fTAVersion;
-        uint64_t fTA_time_start;
-        uint64_t fTA_time_end;
-        uint64_t fTA_time_peak;
-        //uint64_t fTA_time_activity;
-        uint32_t fTA_channel_start;
-        uint32_t fTA_channel_end;
-        uint32_t fTA_channel_peak;
+	std::vector<uint16_t> fTAVersion;
+        std::vector<uint64_t> fTA_time_start;
+        std::vector<uint64_t> fTA_time_end;
+        std::vector<uint64_t> fTA_time_peak;
+        //uint64>_t fTA_time_activity;
+        std::vector<uint32_t> fTA_channel_start;
+        std::vector<uint32_t> fTA_channel_end;
+        std::vector<uint32_t> fTA_channel_peak;
 
-        uint64_t fTA_adc_integral;
-        uint16_t fTA_adc_peak;
+        std::vector<uint64_t> fTA_adc_integral;
+        std::vector<uint16_t> fTA_adc_peak;
 
-        uint32_t fTA_detid;
-        uint16_t fTA_type;
+        std::vector<uint32_t> fTA_detid;
+        std::vector<uint16_t> fTA_type;
 
 	//UInt_t    fChannel;
 	//UShort_t fTPC, fPlane;
@@ -136,23 +136,19 @@ void duneana::hitdQ::analyze(art::Event const&e ){
 	std::cout<<"[DEBUG TA] Found: " <<taHandle->size()<<" TA Object "<<std::endl;
 	for(auto const& ta: *taHandle){
     	    //if(ta.channel_peak>6144)continue;
-    	    fTAVersion        = ta.version;
-    	    fTA_time_start     = ta.time_start;
-    	    fTA_time_end       = ta.time_end;
-    	    fTA_time_peak      = ta.time_peak;
-    	    
-    	    fTA_channel_start  = ta.channel_start;
-    	    fTA_channel_end    = ta.channel_end;
-    	    fTA_channel_peak   = ta.channel_peak;
-    	    
-    	    fTA_adc_integral   = ta.adc_integral;
-    	    fTA_adc_peak       = ta.adc_peak;
-    	    
-    	    fTA_detid          = ta.detid;
-    	    fTA_type           = static_cast<uint16_t>(ta.type);
-    	    
-    	    fTA->Fill();
-    	  }
+	    fTAVersion.push_back(ta.version);
+	    fTA_time_start.push_back(ta.time_start);
+            fTA_time_end.push_back(ta.time_end);
+            fTA_time_peak.push_back(ta.time_peak);
+            fTA_channel_start.push_back(ta.channel_start);
+            fTA_channel_end.push_back(ta.channel_end);
+            fTA_channel_peak.push_back(ta.channel_peak);
+            fTA_adc_integral.push_back(ta.adc_integral);
+            fTA_adc_peak.push_back(ta.adc_peak);
+            fTA_detid.push_back(ta.detid);
+            fTA_type.push_back(static_cast<uint16_t>(ta.type));  
+	}
+	fTA->Fill();
     }
 
     //Hit Information
@@ -187,18 +183,13 @@ void duneana::hitdQ::analyze(art::Event const&e ){
 }
 
 void duneana::hitdQ::reset(){
-    fTAVersion = 0;
-    fTA_time_start = 0;
-    fTA_time_end = 0;
-    fTA_time_peak = 0;
-    fTA_channel_start = 0;
-    fTA_channel_end = 0;
-    fTA_channel_peak = 0;
-    fTA_adc_integral = 0;
-    fTA_adc_peak = 0;
-    fTA_detid = 0;
-    fTA_type = 0;
-    //fChannel = 0;
+    fTAVersion.clear();
+    fTA_time_start.clear();  fTA_time_end.clear();  fTA_time_peak.clear();
+    fTA_channel_start.clear(); fTA_channel_end.clear(); fTA_channel_peak.clear();
+    fTA_adc_integral.clear();
+    fTA_adc_peak.clear();
+    fTA_detid.clear();
+    fTA_type.clear();
     //fStartTick = 0;
     //fEndTick = 0;
     //fPeakTime = 0;
