@@ -4,7 +4,7 @@ process_name: hitdQ
 
 services: {
     TFileService: {
-        fileName: "/pnfs/dune/scratch/users/rraut/trash/Cosmic_Pdune_1MADC_20kticks_10k.root"
+        fileName: "/pnfs/dune/scratch/users/rraut/trash/NU+cosmic_MC_Mergecoll_8M.root"
         closeFileFast: false
     }
     TimeTracker:        @local::dune_time_tracker
