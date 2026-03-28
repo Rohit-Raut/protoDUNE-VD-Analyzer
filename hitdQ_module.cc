@@ -8,7 +8,7 @@
 #include "messagefacility/MessageLogger/MessageLogger.h"
 //#include "lardataobj/RawData/RawDigit.h"
 //#include "lardata/DetectorInfoServices/DetectorClocksService.h"
-//#include "detdataformats/trigger/TriggerPrimitive2.hpp"
+#include "detdataformats/trigger/TriggerPrimitive.hpp"
 //#include "TriggerPrimitive2.hpp"
 #include "detdataformats/trigger/TriggerActivityData.hpp"
 //#include "larcore/Geometry/WireReadout.h"
@@ -28,9 +28,11 @@ namespace duneana{
 
         private:
                 //art::InputTag fTALabel;
-                art::InputTag fTALabel;
+		art::InputTag fTALabel;
+		art::InputTag fTPLabel;
                 //art::InputTag fHitLabel;
                 TTree* fRaw;
+		TTree* fTP;
                 TTree* fHit; 
                 TTree* fTA;
         int fRun, fEvent, fSubRun;
@@ -60,14 +62,22 @@ namespace duneana{
 	//Int_t    fStartTick, fEndTick;
 	//Float_t  fPeakTime, fIntegral, fPeakAmplitude, fRMS;
 
+	// --- Trigger Primitive data members ---
+	std::vector<uint64_t> fTP_time_start;
+	std::vector<uint64_t> fTP_time_peak;
+	std::vector<uint64_t> fTP_time_over_threshold;
+	std::vector<uint32_t> fTP_channel;
+	std::vector<uint64_t> fTP_adc_integral;
+	std::vector<uint16_t> fTP_adc_peak;
+	std::vector<uint32_t> fTP_detid;
     };
 }
 
 duneana::hitdQ::hitdQ(fhicl::ParameterSet const& p)
     :EDAnalyzer(p),
-    fTALabel(p.get<art::InputTag>("TALabel"))
+    fTALabel(p.get<art::InputTag>("TALabel")),
     //fHitLabel(p.get<art::InputTag>("HitLabel"))
-    //fTPLabel(p.get<art::InputTag>("TPLabel"))
+    fTPLabel(p.get<art::InputTag>("TPLabel"))
 {}
 
 void duneana::hitdQ::beginJob(){
@@ -120,6 +130,21 @@ void duneana::hitdQ::beginJob(){
 
     fTA->Branch("detid",          &fTA_detid);
     fTA->Branch("type",           &fTA_type);
+
+    fTP = tfs->make<TTree>("TPTree", "Trigger Primitive Data");
+    fTP->Branch("run",               &fRun,                  "run/I");
+    fTP->Branch("subrun",            &fSubRun,               "subrun/I");
+    fTP->Branch("event",             &fEvent,                "event/I");
+    fTP->Branch("time_start",        &fTP_time_start);
+    fTP->Branch("time_peak",         &fTP_time_peak);
+    fTP->Branch("time_over_threshold",&fTP_time_over_threshold);
+    fTP->Branch("channel",           &fTP_channel);
+    fTP->Branch("adc_integral",      &fTP_adc_integral);
+    fTP->Branch("adc_peak",          &fTP_adc_peak);
+    fTP->Branch("detid",             &fTP_detid);
+
+
+
 }
 
 void duneana::hitdQ::analyze(art::Event const&e ){
@@ -150,7 +175,24 @@ void duneana::hitdQ::analyze(art::Event const&e ){
 	}
 	fTA->Fill();
     }
+    
 
+    auto tpHandle = e.getHandle<std::vector<dunedaq::trgdataformats::TriggerPrimitive>>(fTPLabel);
+
+    if (tpHandle.isValid()) {
+     std::cout << "[DEBUG TP] Found: " << tpHandle->size()
+               << " TP objects" << std::endl;
+     for (auto tp : *tpHandle) {    // note: non-const copy so we can call Channel()
+	fTP_time_start.push_back(tp.time_start);
+	fTP_time_peak.push_back(tp.time_peak);
+    	fTP_time_over_threshold.push_back(tp.time_over_threshold);
+    	fTP_channel.push_back(tp.channel);
+    	fTP_adc_integral.push_back(tp.adc_integral);
+    	fTP_adc_peak.push_back(tp.adc_peak);
+    	fTP_detid.push_back(tp.detid);
+     }
+     fTP->Fill();
+    }
     //Hit Information
    // auto hitHandle = e.getValidHandle<std::vector<recob::Hit>>(fHitLabel);
    // for(auto const& hit: *hitHandle){
@@ -190,6 +232,13 @@ void duneana::hitdQ::reset(){
     fTA_adc_peak.clear();
     fTA_detid.clear();
     fTA_type.clear();
+    fTP_time_start.clear();
+    fTP_time_peak.clear();
+    fTP_time_over_threshold.clear();
+    fTP_channel.clear();
+    fTP_adc_integral.clear();
+    fTP_adc_peak.clear();
+    fTP_detid.clear();
     //fStartTick = 0;
     //fEndTick = 0;
     //fPeakTime = 0;

@@ -4,7 +4,7 @@ process_name: hitdQ
 
 services: {
     TFileService: {
-        fileName: "/pnfs/dune/scratch/users/rraut/trash/yk_cosmic_sample.root"
+        fileName: "/home/rraut/v10_10/work/hnl_ta_1k.root"
         closeFileFast: false
     }
     TimeTracker:        @local::dune_time_tracker
@@ -35,6 +35,7 @@ physics: {
         hitdQ: {
             module_type: "hitdQ"
 	    TALabel: 	"tamakerTPC"
+	    TPLabel: 	"tpmakerTPC"
 	    #HitLabel:	"gaushit"
 	    #for data use different label for TALabel
 	    #TALabel: 	"triggerrawdecoder:daqinTCs"
@@ -47,12 +48,12 @@ physics: {
     trigger_paths:	[trigger_sim]
     end_paths:     [analysis_path]
 }
-outputs: {
-  out1: {
-    module_type: RootOutput
-    fileName: "/pnfs/dune/scratch/users/trash/MC_reco_02.root"
-    fastCloning: false
-    dataTier: "reco"
-    streamName: "hitdQ"
-  }
-}
+#outputs: {
+#  out1: {
+#    module_type: RootOutput
+#    fileName: "MC_reco_02.root"
+#    fastCloning: false
+#    dataTier: "reco"
+#    streamName: "hitdQ"
+#  }
+#}
