@@ -4,7 +4,7 @@ process_name: hitdQ
 
 services: {
     TFileService: {
-        fileName: "/home/rraut/v10_10/work/hnl_ta_1k.root"
+        fileName: "/project/dune/pdvd_run/analysis_trigger/HNL_MC_10kticks_1k.root"
         closeFileFast: false
     }
     TimeTracker:        @local::dune_time_tracker
@@ -21,7 +21,7 @@ services.WireReadout.PDMapTool.MappingFile: "PDVD_PDS_Mapping_v07082025.json"
 
 source: {
     module_type: RootInput
-    #maxEvents: -1
+#maxEvents: -1
     #fileNames: @local::my_input_files
     ##fileNames: [
     ##        "/pnfs/dune/scratch/users/rraut/protodunedm/82416035/Cosmic_detsim_reco_3.root"
@@ -34,8 +34,8 @@ physics: {
     analyzers: {
         hitdQ: {
             module_type: "hitdQ"
-	    TALabel: 	"tamakerTPC"
-	    TPLabel: 	"tpmakerTPC"
+	    TALabel: 	"tamakerTPC10k"
+	    #TPLabel: 	"tpmakerTPC15k"
 	    #HitLabel:	"gaushit"
 	    #for data use different label for TALabel
 	    #TALabel: 	"triggerrawdecoder:daqinTCs"

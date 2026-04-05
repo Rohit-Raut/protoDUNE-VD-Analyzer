@@ -1,0 +1,33 @@
+#include "services_refactored_pdune.fcl"
+
+process_name: TACount
+
+services: {
+    TFileService:          { fileName: "ta_count_tfs.root" }
+    TimeTracker:           @local::dune_time_tracker
+    MemoryTracker:         @local::dune_memory_tracker
+    @table::protodunevd_refactored_simulation_services
+}
+
+source: {
+    module_type: RootInput
+    maxEvents:   -1
+    fileNames:   []
+}
+
+services.DAPHNEChannelMapService.FileName: "PDVD_PDS_Mapping_v07082025.json"
+services.WireReadout.PDMapTool.MappingFile: "PDVD_PDS_Mapping_v07082025.json"
+
+physics: {
+    analyzers: {
+        tacountdumper: {
+            module_type:  TACountDumper
+            ta_10k_tag:   "tamakerTPC10k"
+            ta_15k_tag:   "tamakerTPC15k"
+            ta_20k_tag:   "tamakerTPC"
+            output_csv:   "ta_counts.csv"
+        }
+    }
+    analysis: [ tacountdumper ]
+    end_paths: [ analysis ]
+}
