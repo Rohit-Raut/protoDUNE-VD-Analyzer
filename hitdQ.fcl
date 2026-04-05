@@ -4,7 +4,7 @@ process_name: hitdQ
 
 services: {
     TFileService: {
-        fileName: "/project/dune/pdvd_run/analysis_trigger/HNL_MC_10kticks_1k.root"
+        fileName: "tp_comparision_10v15v20k.root"
         closeFileFast: false
     }
     TimeTracker:        @local::dune_time_tracker
@@ -34,8 +34,8 @@ physics: {
     analyzers: {
         hitdQ: {
             module_type: "hitdQ"
-	    TALabel: 	"tamakerTPC10k"
-	    #TPLabel: 	"tpmakerTPC15k"
+	    TALabel: 	"tamakerTPC"
+	    TPLabel: 	"tpmakerTPC"
 	    #HitLabel:	"gaushit"
 	    #for data use different label for TALabel
 	    #TALabel: 	"triggerrawdecoder:daqinTCs"
